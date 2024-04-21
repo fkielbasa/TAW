@@ -80,7 +80,7 @@ class PostController implements Controller {
     private deleteAllElements = async (request: Request, response: Response) => {
         testArr.length = 0;
 
-        response.status(200).json(testArr);
+        response.status(204).json(testArr);
     };
 }
 

@@ -1,3 +1,4 @@
+import { checkPostCount } from '../middlewares/checkPostCount.middleware';
 import Controller from '../interfaces/controller.interface';
 import { Request, Response, NextFunction, Router } from 'express';
 
@@ -5,6 +6,7 @@ let testArr = [4,5,6,3,5,3,7,5,13,5,6,4,3,6,3,6];
 
 class PostController implements Controller {
    public path = '/api/post';
+   public path2 = '/api/data';
    public router = Router();
 
    constructor() {
@@ -14,7 +16,7 @@ class PostController implements Controller {
    private initializeRoutes() {
     this.router.get(`${this.path}/latest`, this.getAll);
     this.router.post(`${this.path}/:id`, this.addData);
-
+    this.router.post(`${this.path2}/:num`, checkPostCount, this.getManyElements);
     this.router.get(`${this.path}/:id`, this.getElementById);
     this.router.post(`${this.path}`, this.addNewElement);
     this.router.delete(`${this.path}/:id`, this.deleteOneElement);

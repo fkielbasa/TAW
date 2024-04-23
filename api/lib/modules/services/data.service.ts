@@ -29,6 +29,31 @@ class DataService {
            throw new Error('Wystąpił błąd podczas usuwania danych');
        }
    }
+   public async getById(query: Query<number | string | boolean>) {
+       try {
+          return await PostModel.findById(query, { __v: 0 });
+       } catch (error) {
+          console.error('Wystąpił błąd podczas pobierania danych:', error);
+          throw new Error('Wystąpił błąd podczas pobiernaia danych');
+       }
+    }
+    public async deleteById(query: Query<number | string | boolean>) {
+        try {
+            await PostModel.deleteOne(query);
+        } catch (error) {
+            console.error('Wystąpił błąd podczas usuwania danych:', error);
+            throw new Error('Wystąpił błąd podczas usuwania danych');
+        }
+    }
+    public async deleteAllPosts() {
+        try {
+            await PostModel.deleteMany({})
+        } catch (error) {
+            console.error('Wystąpił błąd podczas usuwania danych:', error);
+            throw new Error('Wystąpił błąd podczas usuwania danych');
+        }
+    }
+
 
 }
 

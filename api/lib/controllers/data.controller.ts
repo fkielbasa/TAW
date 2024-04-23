@@ -2,6 +2,7 @@ import { checkPostCount } from '../middlewares/checkPostCount.middleware';
 import Controller from '../interfaces/controller.interface';
 import { Request, Response, NextFunction, Router } from 'express';
 import DataService from '../modules/services/data.service';
+import { logger } from 'middlewares/serverLogger.middleware';
 
 let testArr = [4,5,6,3,5,3,7,5,13,5,6,4,3,6,3,6];
 
@@ -28,13 +29,13 @@ class PostController implements Controller {
     this.router.post(`${this.path2}/`, this.addData);
     this.router.get(`${this.path2}/:id`,this.getElementById);
     this.router.delete(`${this.path2}/:id`,this.removePost);
+    this.router.delete(`${this.path2}/:id`,this.removeById);
+    this.router.delete(`${this.path2}/`,logger, this.removeAllPost);
     }
     
     private addData = async (request: Request, response: Response, next: NextFunction) => {
-        // const { title, text, image} = request.body;
-        const title = "tytul";
-        const text = "to jest text"
-        const image = "https://ibb.co/D4rf5bp"
+        const { title, text, image} = request.body;
+
         const readingData = {
             title,
             text,
@@ -54,13 +55,23 @@ class PostController implements Controller {
      
      private getElementById = async (request: Request, response: Response, next: NextFunction) => {
         const { id } = request.params;
-        const allData = await this.dataService.query({_id: id});
+        const allData = await this.dataService.getById({_id: id});
         response.status(200).json(allData);
      }
      
      private removePost = async (request: Request, response: Response, next: NextFunction) => {
         const { id } = request.params;
         await this.dataService.deleteData({_id: id});
+        response.sendStatus(200);
+     };
+     private removeAllPost = async (request: Request, response: Response, next: NextFunction) => {
+        const { id } = request.params;
+        await this.dataService.deleteAllPosts();
+        response.sendStatus(200);
+     };
+     private removeById = async (request: Request, response: Response, next: NextFunction) => {
+        const { id } = request.params;
+        await this.dataService.deleteById({_id: id});
         response.sendStatus(200);
      };
 

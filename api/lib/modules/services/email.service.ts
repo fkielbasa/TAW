@@ -12,7 +12,7 @@ export class EmailService {
             secure: true, 
             auth: {
                 user: this.email,
-                pass: '1qazXSW@)(87' 
+                pass: '***' 
             }
         });
     }
@@ -23,7 +23,7 @@ export class EmailService {
                 from: this.email, 
                 to, 
                 subject: 'Zmiana hasła', 
-                text: `Twoje hasło: dfd` 
+                text: `Twoje hasło: ${newPassword}` 
             };
 
             await this.transporter.sendMail(mailOptions);
@@ -34,4 +34,5 @@ export class EmailService {
         }
     }
 }
+
 

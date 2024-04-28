@@ -5,9 +5,11 @@ import mongoose from 'mongoose';
 
 class App {
     public app: express.Application;
+    
 
     constructor(controllers: Controller[]) {
         this.app = express();
+        this.app.use(express.json());
         this.initializeControllers(controllers);
         this.connectToDatabase();
     }

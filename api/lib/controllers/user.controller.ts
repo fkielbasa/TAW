@@ -21,6 +21,8 @@ class UserController implements Controller {
        this.router.post(`${this.path}/create`, this.createNewOrUpdate);
        this.router.post(`${this.path}/auth`, this.authenticate);
        this.router.delete(`${this.path}/logout/:userId`, auth, this.removeHashSession);
+       this.router.patch(`${this.path}/:userId/reset`, auth, this.resetPassword);
+
    }
    private authenticate = async (request: Request, response: Response, next: NextFunction) => {
     const {login, password} = request.body;
@@ -69,6 +71,15 @@ class UserController implements Controller {
         response.status(401).json({error: 'Unauthorized'});
     }
  };
+ private resetPassword = async (request: Request, response: Response, next: NextFunction) => {
+    const { userId } = request.params;
+        try {
+            await this.userService.changePassword(userId);
+        } catch (error) {
+            console.error(`Validation Error: ${error.message}`);
+            response.status(400).json({error: 'Bad request', value: error.message});
+        }
+}
  
 
 }
